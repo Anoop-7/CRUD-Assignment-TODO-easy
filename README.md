@@ -1,30 +1,30 @@
 # TODO REST API
 
-A RESTful backend API for a TODO Management System built using Node.js, Express.js, MongoDB, Mongoose, and Zod[cite: 1].
+A RESTful backend API for a TODO Management System built using Node.js, Express.js, MongoDB, Mongoose, and Zod.
 
 ---
 
 ## 1. Overview
 
-This backend API manages task creation, reading, updating, and deleting with strict input validation and proper HTTP response codes[cite: 1]. It stores documents in MongoDB using Mongoose schemas and handles validation errors cleanly with Zod before database operations are invoked[cite: 1].
+This backend API manages task creation, reading, updating, and deleting with strict input validation and proper HTTP response codes. It stores documents in MongoDB using Mongoose schemas and handles validation errors cleanly with Zod before database operations are invoked.
 
 ### Key Features
-- **CRUD Endpoints**: Full lifecycle support (`POST`, `GET`, `PUT`, `PATCH`, `DELETE`)[cite: 1].
-- **Request Validation**: Schema validation using Zod for request bodies, query strings, and 24-character hexadecimal MongoDB ObjectIds[cite: 1].
-- **Automatic Timestamps**: Document timestamps (`createdAt` and `updatedAt`) managed automatically by Mongoose[cite: 1].
-- **Bonus Query Support**: Filtering by completion status (`?completed=true|false`), searching titles with case-insensitive regex (`?search=...`), and pagination (`?page=1&limit=10`) sorted with newest tasks first[cite: 1].
-- **Standardized Error Handling**: Uniform JSON error responses returning appropriate status codes (`200`, `201`, `400`, `404`, `500`)[cite: 1].
+- **CRUD Endpoints**: Full lifecycle support (`POST`, `GET`, `PUT`, `PATCH`, `DELETE`).
+- **Request Validation**: Schema validation using Zod for request bodies, query strings, and 24-character hexadecimal MongoDB ObjectIds.
+- **Automatic Timestamps**: Document timestamps (`createdAt` and `updatedAt`) managed automatically by Mongoose.
+- **Bonus Query Support**: Filtering by completion status (`?completed=true|false`), searching titles with case-insensitive regex (`?search=...`), and pagination (`?page=1&limit=10`) sorted with newest tasks first.
+- **Standardized Error Handling**: Uniform JSON error responses returning appropriate status codes (`200`, `201`, `400`, `404`, `500`).
 
 ---
 
 ## 2. Tech Stack
 
-- **Runtime Environment**: Node.js[cite: 1]
-- **Web Framework**: Express.js[cite: 1]
-- **Database**: MongoDB[cite: 1]
-- **ODM**: Mongoose[cite: 1]
-- **Validation**: Zod[cite: 1]
-- **Environment Management**: Dotenv[cite: 1]
+- **Runtime Environment**: Node.js
+- **Web Framework**: Express.js
+- **Database**: MongoDB
+- **ODM**: Mongoose
+- **Validation**: Zod
+- **Environment Management**: Dotenv
 
 ---
 
@@ -33,18 +33,18 @@ This backend API manages task creation, reading, updating, and deleting with str
 ```text
 todo-backend/
 ├── src/
-│   ├── index.js             # Express application & server entry point[cite: 1]
-│   ├── db.js                # MongoDB connection management[cite: 1]
+│   ├── index.js             # Express application & server entry point
+│   ├── db.js                # MongoDB connection management
 │   ├── models/
-│   │   └── todo.model.js    # Mongoose schema and model definition[cite: 1]
+│   │   └── todo.model.js    # Mongoose schema and model definition
 │   ├── routes/
-│   │   └── todo.route.js    # Express route definitions and handlers[cite: 1]
+│   │   └── todo.route.js    # Express route definitions and handlers
 │   └── schemas/
-│       └── todo.schema.js   # Zod validation schemas[cite: 1]
+│       └── todo.schema.js   # Zod validation schemas
 ├── postman/
 │   └── TODO_assignment.postman_collection.json # Exported Postman test suite
-├── .env.example             # Template for environment variables[cite: 1]
-├── .gitignore               # Ignored files (node_modules, .env)[cite: 1]
+├── .env.example             # Template for environment variables
+├── .gitignore               # Ignored files (node_modules, .env)
 ├── package.json
 └── README.md
 ```
@@ -53,16 +53,16 @@ todo-backend/
 
 ## 4. Database Schema
 
-Each task document inside the `todos` collection adheres to the following structure[cite: 1]:
+Each task document inside the `todos` collection adheres to the following structure:
 
 | Field | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| `_id` | ObjectId | Auto | MongoDB unique identifier[cite: 1] |
-| `title` | String | Yes | Title of the task (minimum 3 characters, trimmed)[cite: 1] |
-| `description` | String | No | Description of the task[cite: 1] |
-| `completed` | Boolean | Yes | Default: `false`[cite: 1] |
-| `createdAt` | Date | Auto | Automatically set on creation[cite: 1] |
-| `updatedAt` | Date | Auto | Automatically updated on save[cite: 1] |
+| `_id` | ObjectId | Auto | MongoDB unique identifier |
+| `title` | String | Yes | Title of the task (minimum 3 characters, trimmed) |
+| `description` | String | No | Description of the task |
+| `completed` | Boolean | Yes | Default: `false` |
+| `createdAt` | Date | Auto | Automatically set on creation |
+| `updatedAt` | Date | Auto | Automatically updated on save |
 
 ---
 
@@ -71,8 +71,8 @@ Each task document inside the `todos` collection adheres to the following struct
 All routes are mounted under the `/todos` prefix.
 
 ### 1. Create a TODO
-- **Method**: `POST`[cite: 1]
-- **Path**: `/todos`[cite: 1]
+- **Method**: `POST`
+- **Path**: `/todos`
 - **Request Body**:
   ```json
   {
@@ -81,10 +81,10 @@ All routes are mounted under the `/todos` prefix.
   }
   ```
 - **Validation Rules**:
-  - `title`: String, required, minimum 3 characters after trimming[cite: 1].
-  - `description`: String, optional[cite: 1].
-  - `completed`: Defaults to `false` and is not accepted from the request body[cite: 1].
-- **Success Response (`201 Created`)**[cite: 1]:
+  - `title`: String, required, minimum 3 characters after trimming.
+  - `description`: String, optional.
+  - `completed`: Defaults to `false` and is not accepted from the request body.
+- **Success Response (`201 Created`)**:
   ```json
   {
     "message": "TODO created successfully",
@@ -102,14 +102,14 @@ All routes are mounted under the `/todos` prefix.
 ---
 
 ### 2. Get All TODOs
-- **Method**: `GET`[cite: 1]
-- **Path**: `/todos`[cite: 1]
+- **Method**: `GET`
+- **Path**: `/todos`
 - **Optional Query Parameters**:
-  - `completed`: Filter by status (`true` or `false`)[cite: 1].
-  - `search`: Search within task titles using case-insensitive regex[cite: 1].
-  - `page`: Page index (default: `1`)[cite: 1].
-  - `limit`: Number of items per page (default: `10`)[cite: 1].
-- **Success Response (`200 OK`)**[cite: 1]:
+  - `completed`: Filter by status (`true` or `false`).
+  - `search`: Search within task titles using case-insensitive regex.
+  - `page`: Page index (default: `1`).
+  - `limit`: Number of items per page (default: `10`).
+- **Success Response (`200 OK`)**:
   ```json
   {
     "todos": [
@@ -136,9 +136,9 @@ All routes are mounted under the `/todos` prefix.
 ---
 
 ### 3. Get Single TODO
-- **Method**: `GET`[cite: 1]
-- **Path**: `/todos/:id`[cite: 1]
-- **Success Response (`200 OK`)**[cite: 1]:
+- **Method**: `GET`
+- **Path**: `/todos/:id`
+- **Success Response (`200 OK`)**:
   ```json
   {
     "todo": {
@@ -152,14 +152,14 @@ All routes are mounted under the `/todos` prefix.
   }
   ```
 - **Error Responses**:
-  - `400 Bad Request` if `:id` is not a valid 24-character hex ObjectId[cite: 1].
-  - `404 Not Found` if no TODO matches the given ID[cite: 1].
+  - `400 Bad Request` if `:id` is not a valid 24-character hex ObjectId.
+  - `404 Not Found` if no TODO matches the given ID.
 
 ---
 
 ### 4. Update a TODO
-- **Method**: `PUT`[cite: 1]
-- **Path**: `/todos/:id`[cite: 1]
+- **Method**: `PUT`
+- **Path**: `/todos/:id`
 - **Request Body**:
   ```json
   {
@@ -168,8 +168,8 @@ All routes are mounted under the `/todos` prefix.
   }
   ```
 - **Validation Rules**:
-  - Both `title` (min 3 characters) and `description` are required[cite: 1].
-- **Success Response (`200 OK`)**[cite: 1]:
+  - Both `title` (min 3 characters) and `description` are required.
+- **Success Response (`200 OK`)**:
   ```json
   {
     "message": "TODO updated successfully",
@@ -187,11 +187,11 @@ All routes are mounted under the `/todos` prefix.
 ---
 
 ### 5. Toggle Completion Status
-- **Method**: `PATCH`[cite: 1]
-- **Path**: `/todos/:id/toggle`[cite: 1]
-- **Request Body**: None required[cite: 1].
-- **Behavior**: Flips `completed` from `false` to `true` or from `true` to `false`[cite: 1].
-- **Success Response (`200 OK`)**[cite: 1]:
+- **Method**: `PATCH`
+- **Path**: `/todos/:id/toggle`
+- **Request Body**: None required.
+- **Behavior**: Flips `completed` from `false` to `true` or from `true` to `false`.
+- **Success Response (`200 OK`)**:
   ```json
   {
     "message": "TODO status updated successfully",
@@ -209,28 +209,28 @@ All routes are mounted under the `/todos` prefix.
 ---
 
 ### 6. Delete a TODO
-- **Method**: `DELETE`[cite: 1]
-- **Path**: `/todos/:id`[cite: 1]
-- **Success Response (`200 OK`)**[cite: 1]:
+- **Method**: `DELETE`
+- **Path**: `/todos/:id`
+- **Success Response (`200 OK`)**:
   ```json
   {
     "message": "TODO deleted successfully"
   }
   ```
 - **Error Response**:
-  - `404 Not Found` if the resource does not exist[cite: 1].
+  - `404 Not Found` if the resource does not exist.
 
 ---
 
 ## 6. HTTP Status Code Conventions
 
-| Status Code | Description | Usage Scenario[cite: 1] |
+| Status Code | Description | Usage Scenario |
 | :--- | :--- | :--- |
-| `200 OK` | Request succeeded | `GET`, `PUT`, `PATCH`, `DELETE` operations[cite: 1] |
-| `201 Created` | Resource created | Successful `POST /todos`[cite: 1] |
-| `400 Bad Request` | Client validation failed | Malformed body, short title, invalid ObjectId[cite: 1] |
-| `404 Not Found` | Resource missing | TODO ID does not exist in database[cite: 1] |
-| `500 Server Error` | Unexpected failure | Database disconnection or unhandled internal errors[cite: 1] |
+| `200 OK` | Request succeeded | `GET`, `PUT`, `PATCH`, `DELETE` operations |
+| `201 Created` | Resource created | Successful `POST /todos` |
+| `400 Bad Request` | Client validation failed | Malformed body, short title, invalid ObjectId |
+| `404 Not Found` | Resource missing | TODO ID does not exist in database |
+| `500 Server Error` | Unexpected failure | Database disconnection or unhandled internal errors |
 
 ---
 
@@ -238,43 +238,43 @@ All routes are mounted under the `/todos` prefix.
 
 ### Prerequisites
 - Node.js installed (v18+ recommended)
-- A running MongoDB instance (local or MongoDB Atlas connection string)[cite: 1]
+- A running MongoDB instance (local or MongoDB Atlas connection string)
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/Anoop-7/CRUD-Assignment-TODO-easy.git](https://github.com/Anoop-7/CRUD-Assignment-TODO-easy.git)[cite: 7]
+git clone [https://github.com/Anoop-7/CRUD-Assignment-TODO-easy.git](https://github.com/Anoop-7/CRUD-Assignment-TODO-easy.git)
 cd CRUD-Assignment-TODO-easy
 ```
 
-### 2. Install Dependencies[cite: 1]
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
 ### 3. Configure Environment Variables
-Create a `.env` file in the project root based on `.env.example`[cite: 1]:
+Create a `.env` file in the project root based on `.env.example`:
 ```bash
 cp .env.example .env
 ```
 
-Add your environment variables[cite: 1]:
+Add your environment variables:
 ```env
 PORT=3000
 MONGODB_URI=mongodb://127.0.0.1:27017/todo_app
 ```
 
 ### 4. Run the Application
-Start the server[cite: 1]:
+Start the server:
 ```bash
 node src/index.js
 ```
-The server will boot and connect to MongoDB, listening on `http://localhost:3000`[cite: 1].
+The server will boot and connect to MongoDB, listening on `http://localhost:3000`.
 
 ---
 
 ## 8. Postman Testing Guide
 
-An exported Postman collection is located in the repository under[cite: 1]:
+An exported Postman collection is located in the repository under:
 ```text
 postman/TODO_assignment.postman_collection.json
 ```
@@ -284,12 +284,12 @@ postman/TODO_assignment.postman_collection.json
 2. Click **Import** in the upper-left corner.
 3. Select the `TODO_assignment.postman_collection.json` file.
 4. Run requests in sequence against `http://localhost:3000` to verify each route:
-   - `POST /todos` (Create a task)[cite: 1]
-   - `POST /todos` (Negative test with title length < 3)[cite: 1]
-   - `GET /todos` (Fetch all tasks)[cite: 1]
-   - `GET /todos?completed=false` (Filter bonus)[cite: 1]
-   - `GET /todos?search=Express` (Search bonus)[cite: 1]
-   - `GET /todos/:id` (Fetch task by ID)[cite: 1]
-   - `PUT /todos/:id` (Update task)[cite: 1]
-   - `PATCH /todos/:id/toggle` (Toggle complete status)[cite: 1]
-   - `DELETE /todos/:id` (Delete task)[cite: 1]
+   - `POST /todos` (Create a task)
+   - `POST /todos` (Negative test with title length < 3)
+   - `GET /todos` (Fetch all tasks)
+   - `GET /todos?completed=false` (Filter bonus)
+   - `GET /todos?search=Express` (Search bonus)
+   - `GET /todos/:id` (Fetch task by ID)
+   - `PUT /todos/:id` (Update task)
+   - `PATCH /todos/:id/toggle` (Toggle complete status)
+   - `DELETE /todos/:id` (Delete task)
